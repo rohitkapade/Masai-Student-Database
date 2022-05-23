@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #navbar {
+            height: 100px;
+            width: 100%;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            
+            
+        }
+
+        #button {
+            height:20px;
+            width: 80px;
+            margin-top: 30px;
+        
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar" >
+        <p style="font-weight:bolder ;font-size:20px;">STUDENT COUNT :</p>
+            <p>Web 16 :<p id="six"></p></p>
+            <p>Web 17 : <p id="seven"></p></p>
+            <p>Web 18 :<p id="eight"></p></p>
+            <p>Web 19 :<p id="nine"></p></p>
+            
+        
+      
+        <button id="button" onclick="dashfunc()">Dashboard</button>
+      
+    </div>
+    <form action="" id="studentData">
+        <input type="text" placeholder="Name" id="name">
+        <input type="text" placeholder="Enter img URL" id="imgURL">
+        <select name="Course" id="course">
+            <option value="">--Select course--</option>
+            <option value="Full time Web Development">Full time Web Development</option>
+            <option value="Part time Web Development">Part time Web Development</option>
+            <option value="Android Development">Android Development</option>
+            <option value="Data Science">Data Science</option>
+        </select>
+        <select name="Unit" id="Unit">
+            <option value="">--Select Unit--</option>
+            <option value="Unit 1">Unit 1</option>
+            <option value="Unit 2">Unit 2</option>
+            <option value="Unit 3">Unit 3</option>
+            <option value="Unit 4">Unit 4</option>
+            <option value="Unit 5">Unit 5</option>
+            <option value="Unit 6">Unit 6</option>
+        </select>
+        
+        <select name="Batch" id="Batch">
+            <option value="">--Select Batch--</option>
+            <option value="Web 16">Web 16</option>
+            <option value="Web 17">Web 17</option>
+            <option value="Web 18">Web 18</option>
+            <option value="Web 19">Web 19</option>
+        </select>
+        <input type="submit">
+    </form>
+</body>
+<script>
+
+
+
+
+function dashfunc(){
+    window.location.href="Dashboard.html"
+}
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------------
+let studentData = document.querySelector("#studentData");
+studentData.addEventListener("submit",studentDataFunc)
+
+
+let arrStudentData = JSON.parse(localStorage.getItem("StudentData")) || []
+
+function studentDataFunc(){
+    event.preventDefault();
+
+    let studentData = document.querySelector("#studentData");
+    let name = studentData.name.value;
+    let img = studentData.imgURL.value;
+    let course = studentData.course.value;
+    let unit = studentData.Unit.value;
+    let batch = studentData.Batch.value;
+
+    let s1 = new Students (name, img, course, unit, batch)
+    arrStudentData.push(s1)
+
+    localStorage.setItem("StudentData", JSON.stringify(arrStudentData))
+}
+
+function Students (n,i,c,u,b){
+    this.name=n;
+    this.img=i;
+    this.course=c;
+    this.unit=u;
+    this.batch=b
+
+}
+
+checkBatch();
+
+function checkBatch(){
+    // event.preventDefault();
+    arrStudentData = JSON.parse(localStorage.getItem("StudentData"))
+
+    let batchObj = {}
+
+    for (let i=0; i<arrStudentData.length; i++){
+        if(!batchObj[arrStudentData[i].batch]){
+            batchObj[arrStudentData[i].batch]=1
+        }
+    }
+
+
+    for (let i=0; i<arrStudentData.length; i++){
+        if(batchObj[arrStudentData[i].batch]){
+            batchObj[arrStudentData[i].batch]++
+        }
+    }
+
+    let web16 = document.querySelector("#six")
+    web16.innerText=batchObj["Web 16"]
+    web16.style="margin-left:-85px"
+
+    let web17 = document.querySelector("#seven")
+    web17.innerText=batchObj["Web 17"]
+    web17.style="margin-left:-85px"
+
+    let web18 = document.querySelector("#eight")
+    web18.innerText=batchObj["Web 18"]
+    web18.style="margin-left:-85px"
+
+    let web19 = document.querySelector("#nine")
+    web19.innerText=batchObj["Web 19"]
+    web19.style="margin-left:-85px"
+
+
+    
+}
+
+
+
+</script>
+</html

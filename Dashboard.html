@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+         #navbar {
+            height: 100px;
+            width: 100%;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            
+            
+        }
+        #button {
+            height:20px;
+            width: 80px;
+            margin-top: 30px;
+        
+        }
+     
+
+    </style>
+</head>
+<body>
+    <div id="navbar" >
+        <p style="font-weight:bolder ;font-size:20px;">STUDENT COUNT :</p>
+            <p>Web 16 :<p id="six"></p></p>
+            <p>Web 17 : <p id="seven"></p></p>
+            <p>Web 18 :<p id="eight"></p></p>
+            <p>Web 19 :<p id="nine"></p></p>
+            
+        
+      
+        <button id="button" onclick="Homepage()">Homepage</button>
+      
+    </div>
+    
+</body>
+</html>
+<script>
+
+
+function Homepage(){
+    window.location.href="HomePage.html"
+}
+
+
+
+
+
+
+
+
+
+
+
+//----------------
+let body = document.querySelector("body")
+let container = document.createElement("div")
+    container.style="border:1px solid black; height:auto; width:100%; display:grid; grid-template-rows:auto; grid-template-columns:repeat(4,1fr);justify-content: space-evenly"
+   container.innerHTML=null
+    body.append(container)
+
+
+
+function append(){
+    // event.preventDefault();
+
+    arrStudentData = JSON.parse(localStorage.getItem("StudentData"))
+
+    
+    arrStudentData.forEach(function(ele, index){
+        
+        let card = document.createElement("div")
+        card.style="border:1px solid black; width:300px; height:400px;margin-top:30px;  "
+        
+
+        let imgdiv = document.createElement("div")
+        imgdiv.style="border:1px solid black; height:60%; width:100%"
+
+
+        let img = document.createElement("img")
+        img.src=ele["img"]
+        img.style="height:100%; width:100%"
+        imgdiv.append(img)
+
+        let name = document.createElement("p")
+        name.innerText="Student Name :"+ ele["name"]
+
+
+        let course = document.createElement("p")
+        course.innerText="Course :"+ ele["course"]
+
+
+        let unit = document.createElement("p")
+        unit.innerText="Unit :"+ ele["unit"]
+
+        let batch = document.createElement("p")
+        batch.innerText="Batch :"+ ele["batch"]
+
+        let btn = document.createElement("button")
+        btn.innerText="Remove"
+        btn.addEventListener("click",function(){
+            remove(index)
+        })
+
+
+
+        
+// console.log(ele)
+        card.append(imgdiv,name,course,unit,batch,btn)
+        container.append(card)
+        
+    });
+}
+
+
+checkBatch();
+
+function checkBatch(){
+    // event.preventDefault();
+    arrStudentData = JSON.parse(localStorage.getItem("StudentData"))
+
+    let batchObj = {}
+
+    for (let i=0; i<arrStudentData.length; i++){
+        if(!batchObj[arrStudentData[i].batch]){
+            batchObj[arrStudentData[i].batch]=1
+        }
+    }
+
+
+    for (let i=0; i<arrStudentData.length; i++){
+        if(batchObj[arrStudentData[i].batch]){
+            batchObj[arrStudentData[i].batch]++
+        }
+    }
+
+    let web16 = document.querySelector("#six")
+    web16.innerText=batchObj["Web 16"]
+    web16.style="margin-left:-85px"
+
+    let web17 = document.querySelector("#seven")
+    web17.innerText=batchObj["Web 17"]
+    web17.style="margin-left:-85px"
+
+    let web18 = document.querySelector("#eight")
+    web18.innerText=batchObj["Web 18"]
+    web18.style="margin-left:-85px"
+
+    let web19 = document.querySelector("#nine")
+    web19.innerText=batchObj["Web 19"]
+    web19.style="margin-left:-85px"
+
+
+    
+}
+append();
+
+
+function remove(index){
+    arrStudentData = JSON.parse(localStorage.getItem("StudentData"))
+
+    arrStudentData.filter(function(ele,i){
+        if (i===index){
+            let trash =JSON.parse(localStorage.getItem("trash")) || []
+            trash.push(ele);
+            localStorage.setItem("trash",JSON.stringify(trash))
+        }
+        else {
+            return i!==index
+        }
+    })
+    
+}
+</script>
